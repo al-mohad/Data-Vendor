@@ -1,4 +1,4 @@
-# datavendor
+# Data Vendor
 
 A new Flutter application for Data Vendors.
 
