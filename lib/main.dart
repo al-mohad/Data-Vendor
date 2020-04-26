@@ -1,5 +1,8 @@
 import 'package:datavendor/screens/input_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'utils/constants.dart';
 
 void main() {
   runApp(DataVendor());
@@ -10,11 +13,33 @@ class DataVendor extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-//          .copyWith(
-//        primaryColor: Color(0xFF0A0E21),
-//        scaffoldBackgroundColor: Color(0xFF0A0E21),
-//      ),
+      theme: ThemeData.dark().copyWith(
+        accentColor: kLightPurple,
+        scaffoldBackgroundColor: kDarkBlack,
+        iconTheme: IconThemeData(color: kDarkPurple),
+        appBarTheme: AppBarTheme(
+          color: kLightBlack,
+          textTheme: TextTheme(
+            title: TextStyle(
+              fontFamily: 'Nunito-Black',
+              fontSize: 25.0,
+            ),
+          ),
+          iconTheme: IconThemeData(color: kDarkPurple),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+              color: kLightGrey, fontFamily: 'Nunito-Regular', fontSize: 20),
+          hintStyle: TextStyle(
+              color: kLightGrey, fontFamily: 'Nunito-Light', fontSize: 20),
+        ),
+        textTheme: TextTheme(
+          overline: TextStyle(color: kDarkPurple),
+          subhead: TextStyle(fontFamily: 'Nunito-Bold', fontSize: 18.0),
+          body1: TextStyle(
+              fontFamily: 'Nunito-Light', fontSize: 18.0, color: kDarkGrey),
+        ),
+      ),
       home: InputPage(),
     );
   }

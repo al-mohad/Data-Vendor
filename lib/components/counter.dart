@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../utils/constants.dart';
+
 class CounterCard extends StatelessWidget {
-  final Color colour;
   final Widget cardChild;
   final Function onTap;
 
-  const CounterCard({@required this.colour, this.cardChild, this.onTap});
+  const CounterCard({this.cardChild, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class CounterCard extends StatelessWidget {
         height: 330.0,
         margin: EdgeInsets.all(15.0),
         decoration: BoxDecoration(
-          color: colour,
+          color: kLightBlack,
           borderRadius: BorderRadius.circular(10),
         ),
       ),

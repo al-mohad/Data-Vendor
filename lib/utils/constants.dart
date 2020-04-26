@@ -13,3 +13,10 @@ const kResultTextStyle = TextStyle(
     color: Color(0xff24d876), fontSize: 22.0, fontWeight: FontWeight.bold);
 const kDataAmountSentTextStyle =
     TextStyle(fontSize: 60.0, fontWeight: FontWeight.bold);
+//
+const kDarkPurple = Color(0xFFA44EFA);
+const kLightPurple = Color(0xFFB676FB);
+const kDarkBlack = Color(0xFF1C1D22);
+const kLightBlack = Color(0xFF25262B);
+const kDarkGrey = Color(0xFF939393);
+const kLightGrey = Color(0xFF909090);

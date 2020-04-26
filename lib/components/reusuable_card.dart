@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../utils/constants.dart';
+
 class ReusuableCard extends StatelessWidget {
-  final Color colour;
   final Widget cardChild;
   final Function onTap;
   final int height;
 
-  const ReusuableCard(
-      {@required this.colour, this.cardChild, this.onTap, this.height});
+  const ReusuableCard({this.cardChild, this.onTap, this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,9 @@ class ReusuableCard extends StatelessWidget {
       child: Container(
         height: height.toDouble(),
         child: cardChild,
-        margin: EdgeInsets.all(15.0),
+        margin: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
         decoration: BoxDecoration(
-          color: colour,
+          color: kLightBlack,
           borderRadius: BorderRadius.circular(10),
         ),
       ),
