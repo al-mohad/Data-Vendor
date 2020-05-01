@@ -14,6 +14,7 @@ import 'package:datavendor/screens/settings_page.dart';
 import 'package:datavendor/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -43,17 +44,16 @@ class _InputPageState extends State<InputPage> {
   int newID;
 
   String _today = DateFormat.yMMMd().format(DateTime.now());
-  final ContactPicker _contactPicker = ContactPicker();
+  final ContactPicker _contactPicker = new ContactPicker();
   Contact _contact;
+
   _selectContact() async {
     Contact contact = await _contactPicker.selectContact();
     setState(() {
       _contact = contact;
-      phoneNumberController.text = contact.phoneNumber.toString();
     });
   }
 
-  SmsSender sender = SmsSender();
   String _address = '131';
   String _pin = '1234';
   SnackBar invalidDataAmountSnackBar = SnackBar(
@@ -73,6 +73,7 @@ class _InputPageState extends State<InputPage> {
   );
 
   sendSMS() async {
+    _saveToDatabase();
     final form = _formKey.currentState;
     int newDataValue = int.parse(dataAmountController.text);
     if (form.validate()) form.save();
@@ -86,16 +87,15 @@ class _InputPageState extends State<InputPage> {
       dataType = 'SMED';
     } else if (newDataValue >= 5000) {
       dataType = 'SME';
-    } else {
-      _scaffoldkey.currentState.showSnackBar(invalidDataAmountSnackBar);
     }
 
-    await sender.sendSms(SmsMessage(_address,
+    await smsSender.sendSms(SmsMessage(_address,
         '$dataType ${phoneNumberController.text.trim()} ${dataAmountController.text} $_pin'));
+    _saveToDatabase();
   }
 
+  SmsSender smsSender = SmsSender();
   _saveToDatabase() async {
-    print(phoneNumberController.text);
     String _currentTime = await DateFormat.jms().format(DateTime.now());
     await db.addRecord(
       Data(
@@ -109,10 +109,13 @@ class _InputPageState extends State<InputPage> {
     });
 
     Timer(
-        Duration(milliseconds: 1500),
-        () => setState(() {
-              vendor = 'VENDOR';
-            }));
+      Duration(milliseconds: 1500),
+      () => setState(() {
+        vendor = 'VENDOR';
+      }),
+    );
+    phoneNumberController.clear();
+    dataAmountController.clear();
   }
 
   int _radioGroupValue = 1;
@@ -154,6 +157,7 @@ class _InputPageState extends State<InputPage> {
     var _recordsData = await db.fetchAll();
     var _profileData = await db.fetchProfile();
     var _settingsData = await db.fetchSettings();
+
     setState(() {
       recordsData = _recordsData;
       profileData = _profileData;
@@ -199,8 +203,9 @@ class _InputPageState extends State<InputPage> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-              icon: Icon(vendor == 'VENDOR' ? Icons.info : Icons.check_circle),
-              onPressed: () {})
+            icon: Icon(vendor == 'VENDOR' ? Icons.info : Icons.check_circle),
+            onPressed: () async {},
+          )
         ],
       ),
       body: Column(
@@ -323,12 +328,15 @@ class _InputPageState extends State<InputPage> {
                               Expanded(
                                 flex: 4,
                                 child: TextFormField(
+                                  initialValue: _contact == null
+                                      ? 'No contact selected.'
+                                      : _contact.toString(),
                                   keyboardType: TextInputType.number,
                                   validator: (value) =>
                                       value.trim().length < 11 || value.isEmpty
                                           ? 'Invalid Phone Number'
                                           : null,
-                                  controller: phoneNumberController,
+                                  // controller: phoneNumberController,
                                   decoration: InputDecoration(
                                       labelText: 'Phone Number',
                                       hintText: '08036508999'),
@@ -341,9 +349,7 @@ class _InputPageState extends State<InputPage> {
                                     Icons.contact_phone,
                                     size: 30,
                                   ),
-                                  onPressed: () {
-                                    _selectContact();
-                                  },
+                                  onPressed: () => _selectContact(),
                                 ),
                               )
                             ],
@@ -429,7 +435,7 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           GestureDetector(
-            onTap: () => _saveToDatabase(),
+            onTap: () => sendSMS(),
             child: Container(
               decoration: BoxDecoration(
                 color: kDarkPurple,

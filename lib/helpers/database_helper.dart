@@ -148,7 +148,7 @@ class DatabaseHelper {
         ['$new_username', '$id']);
   }
 
-  Future<int> updateISP(String new_isp_pin, String id) async {
+  Future<String> updateISP(String new_isp_pin, String id) async {
     var client = await db;
     client.rawUpdate('UPDATE settings SET isp_pin = ? WHERE id = ?',
         ['$new_isp_pin', '$id']);

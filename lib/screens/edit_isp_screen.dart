@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:datavendor/helpers/database_helper.dart';
 import 'package:datavendor/models/settings_model.dart';
 import 'package:datavendor/utils/constants.dart';
@@ -17,14 +19,21 @@ class _EditISPState extends State<EditISP> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final db = DatabaseHelper();
   List<Settings> settingsData = [];
+  String appBarText = 'ISP Settings';
+  update() async {
+    await db.updateISP(_pinTextEditingController.text, '${widget.id + 1}');
+    setState(() {
+      appBarText = 'Settings UPDATED !!!';
+    });
+    Timer(Duration(milliseconds: 1500), () {
+      setState(() {
+        appBarText = 'ISP Settings';
+      });
+    });
 
-  update(String new_isp_pin, String id) async {
-    if (formkey.currentState.validate()) {
-      formkey.currentState.save();
-      await db.updateISP(new_isp_pin, id);
-      setupList();
-      _pinTextEditingController.clear();
-    }
+    print('New Pin is : ${_pinTextEditingController.text}');
+    setupList();
+    _pinTextEditingController.clear();
   }
 
   String isp_name;
@@ -50,7 +59,11 @@ class _EditISPState extends State<EditISP> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ISP Settings'),
+        title: Text(
+          appBarText,
+          style: TextStyle(
+              color: appBarText == 'ISP Settings' ? Colors.white : kDarkPurple),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -80,8 +93,10 @@ class _EditISPState extends State<EditISP> {
                       ),
                       Container(
                         width: 50,
-                        child: TextFormField(
-                          initialValue: settingsData[widget.id].isp_number,
+                        child: Text(
+                          settingsData[widget.id].isp_number,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                              fontSize: 25, fontFamily: 'Nunito-Black'),
                         ),
                       ),
                     ],
@@ -90,7 +105,7 @@ class _EditISPState extends State<EditISP> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'YOUR PIN : ',
+                        'Enter New Pin : ',
                         style: Theme.of(context).textTheme.title,
                       ),
                       Container(
@@ -108,8 +123,7 @@ class _EditISPState extends State<EditISP> {
             ),
             RaisedButton(
               color: kDarkPurple,
-              onPressed: () =>
-                  update(_pinTextEditingController.text, widget.id.toString()),
+              onPressed: () => update(),
               child: Text(
                 'UPDATE',
                 style: Theme.of(context)

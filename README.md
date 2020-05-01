@@ -1,6 +1,6 @@
-# Data Vendor
+# datavendor
 
-A new Flutter application for Data Vendors.
+A new Flutter application.
 
 ## Getting Started
 
