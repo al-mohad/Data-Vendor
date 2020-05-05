@@ -7,16 +7,19 @@ class IconContents extends StatelessWidget {
   IconContents({this.title, this.icon});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          icon,
-          size: 30.0,
-        ),
-        SizedBox(height: 15.0),
-        Text(title, style: kLabelTextStyle)
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            icon,
+            size: 50.0,
+          ),
+          SizedBox(height: 15.0),
+          Text(title, style: kLabelTextStyle)
+        ],
+      ),
     );
   }
 }

@@ -14,8 +14,8 @@ class CounterCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         child: cardChild,
-        height: 330.0,
-        margin: EdgeInsets.all(15.0),
+        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+        margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         decoration: BoxDecoration(
           color: kLightBlack,
           borderRadius: BorderRadius.circular(10),

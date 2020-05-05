@@ -14,6 +14,7 @@ import 'package:datavendor/screens/settings_page.dart';
 import 'package:datavendor/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -62,7 +63,7 @@ class _InputPageState extends State<InputPage> {
     elevation: 2.0,
     behavior: SnackBarBehavior.floating,
   );
-  SnackBar dataSentSnacbar = SnackBar(
+  SnackBar dataSentSnackBar = SnackBar(
     content: Text(
       'Data Sent Successfully',
       textAlign: TextAlign.center,
@@ -89,8 +90,12 @@ class _InputPageState extends State<InputPage> {
       dataType = 'SME';
     }
 
-    await smsSender.sendSms(SmsMessage(_address,
-        '$dataType ${phoneNumberController.text.trim()} ${dataAmountController.text} $_pin'));
+    await smsSender.sendSms(
+      SmsMessage(
+          _address,
+          '$dataType ${phoneNumberController.text.trim()} '
+          '${dataAmountController.text} $_pin'),
+    );
     _saveToDatabase();
   }
 
@@ -214,7 +219,6 @@ class _InputPageState extends State<InputPage> {
             child: ListView(
               children: <Widget>[
                 ReusuableCard(
-                  height: 200,
                   cardChild: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -315,121 +319,109 @@ class _InputPageState extends State<InputPage> {
                   cardChild: Form(
                     key: _formKey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 10.0),
-                        Container(
-                          padding: EdgeInsets.only(left: 10, right: 10),
-                          child: Row(
-                            textBaseline: TextBaseline.alphabetic,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            children: <Widget>[
-                              Expanded(
-                                flex: 4,
-                                child: TextFormField(
-                                  initialValue: _contact == null
-                                      ? 'No contact selected.'
-                                      : _contact.toString(),
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) =>
-                                      value.trim().length < 11 || value.isEmpty
-                                          ? 'Invalid Phone Number'
-                                          : null,
-                                  // controller: phoneNumberController,
-                                  decoration: InputDecoration(
-                                      labelText: 'Phone Number',
-                                      hintText: '08036508999'),
-                                ),
+                        Row(
+                          textBaseline: TextBaseline.alphabetic,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 4,
+                              child: TextFormField(
+                                initialValue: _contact == null
+                                    ? 'No contact selected.'
+                                    : _contact.toString(),
+                                keyboardType: TextInputType.number,
+                                validator: (value) =>
+                                    value.trim().length < 11 || value.isEmpty
+                                        ? 'Invalid Phone Number'
+                                        : null,
+                                // controller: phoneNumberController,
+                                decoration: InputDecoration(
+                                    labelText: 'Phone Number',
+                                    hintText: '08036508999'),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.contact_phone,
-                                    size: 30,
-                                  ),
-                                  onPressed: () => _selectContact(),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.contact_phone,
+                                  size: 30,
                                 ),
-                              )
-                            ],
-                          ),
+                                onPressed: () => _selectContact(),
+                              ),
+                            )
+                          ],
                         ),
                         SizedBox(height: 10.0),
-                        Container(
-                          padding: EdgeInsets.only(left: 10, right: 10),
-                          child: Row(
-                            textBaseline: TextBaseline.alphabetic,
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                flex: 3,
-                                child: TextFormField(
-                                  validator: (value) =>
-                                      value.isEmpty || value.length < 3
-                                          ? 'Invalid Amount'
-                                          : null,
-                                  keyboardType: TextInputType.number,
-                                  controller: dataAmountController,
-                                  decoration: InputDecoration(
-                                      labelText: 'Data Amount',
-                                      hintText: '100'),
+                        Row(
+                          textBaseline: TextBaseline.alphabetic,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 3,
+                              child: TextFormField(
+                                validator: (value) =>
+                                    value.isEmpty || value.length < 3
+                                        ? 'Invalid Amount'
+                                        : null,
+                                keyboardType: TextInputType.number,
+                                controller: dataAmountController,
+                                decoration: InputDecoration(
+                                  labelText: 'Data Amount',
+                                  hintText: '100',
                                 ),
                               ),
-                              SizedBox(width: 5.0),
-                              Expanded(
-                                flex: 2,
-                                child: Center(
-                                  child: Text(
-                                    'MEGA BYTES',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(
-                                            fontFamily: 'Nunito-Bold',
-                                            color: kDarkPurple),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: ReusuableCard(
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => RecordsPage(),
-                                    ),
-                                  ),
-                                  cardChild: IconContents(
-                                    title: 'Records',
-                                    icon: FontAwesomeIcons.history,
-                                  ),
-                                  height: 70,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Center(
+                                child: Text(
+                                  'MEGA BYTES',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body1
+                                      .copyWith(
+                                          fontFamily: 'Nunito-Bold',
+                                          color: kDarkPurple),
                                 ),
                               ),
-                              Expanded(
-                                child: ReusuableCard(
-                                  onTap: () => exit(0),
-                                  height: 70,
-                                  cardChild: IconContents(
-                                    title: 'Exit',
-                                    icon: FontAwesomeIcons.signOutAlt,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       ],
                     ),
                   ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ReusuableCard(
+                        onTap: () => Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => RecordsPage(),
+                          ),
+                        ),
+                        cardChild: IconContents(
+                          title: 'Records',
+                          icon: FontAwesomeIcons.history,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ReusuableCard(
+                        onTap: () => exit(0),
+                        cardChild: IconContents(
+                          title: 'Exit',
+                          icon: FontAwesomeIcons.signOutAlt,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
