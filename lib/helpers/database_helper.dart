@@ -56,7 +56,6 @@ class DatabaseHelper {
   ''');
     print("Database was created!");
     insertDefaultSettings();
-    print('Default Values Inserted');
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) {
@@ -80,7 +79,7 @@ class DatabaseHelper {
 
   Future<List<Data>> fetchAll() async {
     var client = await db;
-    var res = await client.query('dataVendor');
+    var res = await client.query('dataVendor', orderBy: 'phone_number ASC');
 
     if (res.isNotEmpty) {
       var datas = res.map((datasMap) => Data.fromDb(datasMap)).toList();

@@ -47,37 +47,22 @@ class _InputPageState extends State<InputPage> {
   String _today = DateFormat.yMMMd().format(DateTime.now());
   final ContactPicker _contactPicker = new ContactPicker();
   Contact _contact;
-
   _selectContact() async {
     Contact contact = await _contactPicker.selectContact();
     setState(() {
       _contact = contact;
+      phoneNumberController.text = _contact.phoneNumber.number.toString();
     });
   }
 
-  String _address = '131';
-  String _pin = '1234';
-  SnackBar invalidDataAmountSnackBar = SnackBar(
-    content: Text('Error: You can\'t send less than 250MB!!!'),
-    duration: Duration(seconds: 5),
-    elevation: 2.0,
-    behavior: SnackBarBehavior.floating,
-  );
-  SnackBar dataSentSnackBar = SnackBar(
-    content: Text(
-      'Data Sent Successfully',
-      textAlign: TextAlign.center,
-    ),
-    duration: Duration(seconds: 2),
-    elevation: 2.0,
-    behavior: SnackBarBehavior.floating,
-  );
-
-  sendSMS() async {
-    _saveToDatabase();
+  SmsSender smsSender = SmsSender();
+  _sendSMS() async {
     final form = _formKey.currentState;
     int newDataValue = int.parse(dataAmountController.text);
-    if (form.validate()) form.save();
+    if (form.validate())
+      form.save();
+    else
+      return;
     if (newDataValue >= 250) {
       dataType = 'SMEA';
     } else if (newDataValue >= 500) {
@@ -92,14 +77,13 @@ class _InputPageState extends State<InputPage> {
 
     await smsSender.sendSms(
       SmsMessage(
-          _address,
+          isp_number,
           '$dataType ${phoneNumberController.text.trim()} '
-          '${dataAmountController.text} $_pin'),
+          '${dataAmountController.text} $isp_pin'),
     );
     _saveToDatabase();
   }
 
-  SmsSender smsSender = SmsSender();
   _saveToDatabase() async {
     String _currentTime = await DateFormat.jms().format(DateTime.now());
     await db.addRecord(
@@ -132,23 +116,34 @@ class _InputPageState extends State<InputPage> {
     switch (_radioGroupValue) {
       case 1:
         print('Airtle Selected');
-        isp_pin = settingsData[0].isp_pin;
-        isp_number = settingsData[0].isp_number;
+        setState(() {
+          isp_pin = settingsData[0].isp_pin;
+          isp_number = settingsData[0].isp_number;
+        });
+
         break;
       case 2:
         print('Etisalat Selected');
-        isp_pin = settingsData[1].isp_pin;
-        isp_number = settingsData[1].isp_number;
+        setState(() {
+          isp_pin = settingsData[1].isp_pin;
+          isp_number = settingsData[1].isp_number;
+        });
         break;
       case 3:
         print('Glo Selected');
-        isp_pin = settingsData[2].isp_pin;
-        isp_number = settingsData[2].isp_number;
+        setState(() {
+          isp_pin = settingsData[2].isp_pin;
+          isp_number = settingsData[2].isp_number;
+        });
         break;
       case 4:
         print('MTN Selected');
-        isp_pin = settingsData[3].isp_pin;
-        isp_number = settingsData[3].isp_number;
+        setState(() {
+          isp_pin = settingsData[3].isp_pin;
+          isp_number = settingsData[3].isp_number;
+        });
+        print(settingsData[3].isp_number);
+        print(settingsData[3].isp_pin);
         break;
     }
   }
@@ -329,9 +324,7 @@ class _InputPageState extends State<InputPage> {
                             Expanded(
                               flex: 4,
                               child: TextFormField(
-                                initialValue: _contact == null
-                                    ? 'No contact selected.'
-                                    : _contact.toString(),
+                                controller: phoneNumberController,
                                 keyboardType: TextInputType.number,
                                 validator: (value) =>
                                     value.trim().length < 11 || value.isEmpty
@@ -365,14 +358,14 @@ class _InputPageState extends State<InputPage> {
                               flex: 3,
                               child: TextFormField(
                                 validator: (value) =>
-                                    value.isEmpty || value.length < 3
+                                    value.isEmpty || int.parse(value) < 250
                                         ? 'Invalid Amount'
                                         : null,
                                 keyboardType: TextInputType.number,
                                 controller: dataAmountController,
                                 decoration: InputDecoration(
                                   labelText: 'Data Amount',
-                                  hintText: '100',
+                                  hintText: '250',
                                 ),
                               ),
                             ),
@@ -427,7 +420,7 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           GestureDetector(
-            onTap: () => sendSMS(),
+            onTap: () => _sendSMS(),
             child: Container(
               decoration: BoxDecoration(
                 color: kDarkPurple,
