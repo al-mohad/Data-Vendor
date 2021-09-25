@@ -66,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             Text(
               username,
-              style: Theme.of(context).textTheme.headline.copyWith(
+              style: Theme.of(context).textTheme.headline1.copyWith(
                   fontFamily: 'Nunito-Black',
                   fontSize: 35,
                   color: kLightPurple),
@@ -108,7 +108,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   'UPDATE PROFILE',
                   style: Theme.of(context)
                       .textTheme
-                      .headline
+                      .headline1
                       .copyWith(fontFamily: 'Nunito-Bold', fontSize: 25),
                 ),
               ),

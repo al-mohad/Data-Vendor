@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   'Profile',
                   style: Theme.of(context)
                       .textTheme
-                      .headline
+                      .headline1
                       .copyWith(fontSize: 30, fontFamily: 'Nunito-Black'),
                 ),
                 trailing: IconButton(

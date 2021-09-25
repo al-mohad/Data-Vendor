@@ -20,7 +20,7 @@ class DataVendor extends StatelessWidget {
         appBarTheme: AppBarTheme(
           color: kLightBlack,
           textTheme: TextTheme(
-            title: TextStyle(
+            headline1: TextStyle(
               fontFamily: 'Nunito-Black',
               fontSize: 25.0,
             ),
@@ -35,8 +35,8 @@ class DataVendor extends StatelessWidget {
         ),
         textTheme: TextTheme(
           overline: TextStyle(color: kDarkPurple),
-          subhead: TextStyle(fontFamily: 'Nunito-Bold', fontSize: 18.0),
-          body1: TextStyle(
+          subtitle1: TextStyle(fontFamily: 'Nunito-Bold', fontSize: 18.0),
+          bodyText1: TextStyle(
               fontFamily: 'Nunito-Light', fontSize: 18.0, color: kDarkGrey),
         ),
       ),

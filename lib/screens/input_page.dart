@@ -85,7 +85,7 @@ class _InputPageState extends State<InputPage> {
   }
 
   _saveToDatabase() async {
-    String _currentTime = await DateFormat.jms().format(DateTime.now());
+    String _currentTime = DateFormat.jms().format(DateTime.now());
     await db.addRecord(
       Data(
           phone_number: phoneNumberController.text,
@@ -224,7 +224,7 @@ class _InputPageState extends State<InputPage> {
                             margin: EdgeInsets.all(15),
                             child: Text(
                               'Hello $username',
-                              style: Theme.of(context).textTheme.headline,
+                              style: Theme.of(context).textTheme.headline1,
                             ),
                           ),
                           Spacer(),
@@ -248,7 +248,7 @@ class _InputPageState extends State<InputPage> {
                         margin: EdgeInsets.all(15),
                         child: Text(
                           'Select Network',
-                          style: Theme.of(context).textTheme.body1.copyWith(
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
                               fontSize: 20, fontFamily: 'Nunito-Bold'),
                         ),
                       ),
@@ -260,7 +260,7 @@ class _InputPageState extends State<InputPage> {
                               'Airtle',
                               style: Theme.of(context)
                                   .textTheme
-                                  .body1
+                                  .bodyText1
                                   .copyWith(fontSize: 10),
                             ),
                             Radio(
@@ -272,7 +272,7 @@ class _InputPageState extends State<InputPage> {
                               'Etisalat',
                               style: Theme.of(context)
                                   .textTheme
-                                  .body1
+                                  .bodyText1
                                   .copyWith(fontSize: 10),
                             ),
                             Radio(
@@ -284,7 +284,7 @@ class _InputPageState extends State<InputPage> {
                               'GLO',
                               style: Theme.of(context)
                                   .textTheme
-                                  .body1
+                                  .bodyText1
                                   .copyWith(fontSize: 10),
                             ),
                             Radio(
@@ -296,7 +296,7 @@ class _InputPageState extends State<InputPage> {
                               'MTN',
                               style: Theme.of(context)
                                   .textTheme
-                                  .body1
+                                  .bodyText1
                                   .copyWith(fontSize: 10),
                             ),
                             Radio(
@@ -376,7 +376,7 @@ class _InputPageState extends State<InputPage> {
                                   'MEGA BYTES',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .body1
+                                      .bodyText1
                                       .copyWith(
                                           fontFamily: 'Nunito-Bold',
                                           color: kDarkPurple),
@@ -435,7 +435,7 @@ class _InputPageState extends State<InputPage> {
               child: Center(
                 child: Text(
                   'SEND DATA',
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                       fontFamily: 'Nunito-Black',
                       color: Colors.white,
                       fontSize: 30),

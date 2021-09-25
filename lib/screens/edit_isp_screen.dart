@@ -75,7 +75,7 @@ class _EditISPState extends State<EditISP> {
               child: Center(
                 child: Text(
                   isp_name,
-                  style: Theme.of(context).textTheme.headline,
+                  style: Theme.of(context).textTheme.headline1,
                 ),
               ),
             ),
@@ -89,13 +89,13 @@ class _EditISPState extends State<EditISP> {
                     children: <Widget>[
                       Text(
                         'ISP NUMBER : ',
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).textTheme.headline1,
                       ),
                       Container(
                         width: 50,
                         child: Text(
                           settingsData[widget.id].isp_number,
-                          style: Theme.of(context).textTheme.body1.copyWith(
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
                               fontSize: 25, fontFamily: 'Nunito-Black'),
                         ),
                       ),
@@ -106,7 +106,7 @@ class _EditISPState extends State<EditISP> {
                     children: <Widget>[
                       Text(
                         'Enter New Pin : ',
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).textTheme.headline1,
                       ),
                       Container(
                         width: 50,
@@ -128,7 +128,7 @@ class _EditISPState extends State<EditISP> {
                 'UPDATE',
                 style: Theme.of(context)
                     .textTheme
-                    .headline
+                    .headline1
                     .copyWith(fontFamily: 'Nunito-Regular'),
               ),
             )
